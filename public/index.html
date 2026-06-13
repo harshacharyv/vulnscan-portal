@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VulnScan Pro Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+    <div
+      id="login-view"
+      class="min-h-screen flex items-center justify-center p-4"
+    >
+      <div
+        class="w-full max-w-md bg-gray-800 border border-gray-700 rounded-2xl p-8 shadow-2xl relative overflow-hidden"
+      >
+        <div class="absolute top-0 left-0 w-full h-1 bg-red-500"></div>
+
+        <div class="text-center mb-8">
+          <div
+            class="inline-flex items-center justify-center p-3 bg-red-500/10 rounded-xl border border-red-500/20 mb-3"
+          >
+            <i data-lucide="shield-alert" class="text-red-500 w-8 h-8"></i>
+          </div>
+          <h1 class="text-2xl font-bold text-white tracking-wide">
+            VulnScan Pro
+          </h1>
+          <p class="text-sm text-gray-400 mt-1">
+            Authenticate to access the security portal
+          </p>
+        </div>
+
+        <div
+          id="error-message"
+          class="hidden bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-sm mb-4 flex items-center gap-2"
+        >
+          <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+          <span id="error-text">Invalid email or password. Try again!</span>
+        </div>
+
+        <form id="login-form" class="space-y-5">
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2"
+              >Email Address</label
+            >
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500"
+              >
+                <i data-lucide="mail" class="w-5 h-5"></i>
+              </div>
+              <input
+                type="email"
+                id="email"
+                required
+                autocomplete="off"
+                class="w-full bg-gray-900 border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2"
+              >Password</label
+            >
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500"
+              >
+                <i data-lucide="lock" class="w-5 h-5"></i>
+              </div>
+              <input
+                type="password"
+                id="password"
+                required
+                autocomplete="off"
+                class="w-full bg-gray-900 border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg flex items-center justify-center gap-2"
+          >
+            <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="dashboard-view" class="hidden h-screen overflow-hidden">
+      <aside
+        class="w-64 bg-gray-800 border-r border-gray-700 p-6 flex flex-col justify-between hidden md:flex"
+      >
+        <div>
+          <div class="flex items-center gap-3 mb-8">
+            <i data-lucide="shield-alert" class="text-red-500 w-8 h-8"></i>
+            <span class="text-xl font-bold tracking-wider text-white"
+              >VulnScan Pro</span
+            >
+          </div>
+          <nav class="space-y-2">
+            <button
+              id="nav-dashboard"
+              class="w-full flex items-center gap-3 bg-gray-700 text-white px-4 py-2.5 rounded-lg font-medium transition text-left"
+            >
+              <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+            </button>
+            <button
+              id="nav-scan"
+              class="w-full flex items-center gap-3 text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2.5 rounded-lg font-medium transition text-left"
+            >
+              <i data-lucide="scan" class="w-5 h-5"></i> Scan Target
+            </button>
+            <button
+              class="w-full flex items-center gap-3 text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2.5 rounded-lg font-medium transition text-left opacity-50 cursor-not-allowed"
+            >
+              <i data-lucide="history" class="w-5 h-5"></i> Scan History
+            </button>
+            <button
+              class="w-full flex items-center gap-3 text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2.5 rounded-lg font-medium transition text-left opacity-50 cursor-not-allowed"
+            >
+              <i data-lucide="settings" class="w-5 h-5"></i> Settings
+            </button>
+          </nav>
+        </div>
+        <div class="space-y-4">
+          <button
+            id="logout-btn"
+            class="w-full flex items-center gap-3 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-lg font-medium transition text-left"
+          >
+            <i data-lucide="log-out" class="w-5 h-5"></i> Logout Portal
+          </button>
+          <div
+            class="text-xs text-gray-500 text-center border-t border-gray-700 pt-4"
+          >
+            v1.0.0 &copy; 2026
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1 flex flex-col overflow-y-auto">
+        <header
+          class="bg-gray-800 border-b border-gray-700 px-8 py-4 flex justify-between items-center"
+        >
+          <h1 id="panel-title" class="text-2xl font-semibold text-white">
+            Vulnerability Assessment
+          </h1>
+          <div class="flex items-center gap-4">
+            <div
+              class="w-10 h-10 rounded-full bg-gray-600 border border-gray-500 flex items-center justify-center text-white font-bold"
+            >
+              A
+            </div>
+          </div>
+        </header>
+
+        <div id="page-dashboard" class="p-8 space-y-8">
+          <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              class="bg-gray-800 border-l-4 border-red-500 p-6 rounded-xl shadow-md"
+            >
+              <div class="flex justify-between items-center text-gray-400 mb-2">
+                <span class="text-sm font-medium uppercase tracking-wider"
+                  >Critical</span
+                ><i data-lucide="skull" class="text-red-500 w-5 h-5"></i>
+              </div>
+              <div class="text-3xl font-bold text-white">12</div>
+            </div>
+            <div
+              class="bg-gray-800 border-l-4 border-orange-500 p-6 rounded-xl shadow-md"
+            >
+              <div class="flex justify-between items-center text-gray-400 mb-2">
+                <span class="text-sm font-medium uppercase tracking-wider"
+                  >High Risk</span
+                ><i
+                  data-lucide="alert-triangle"
+                  class="text-orange-500 w-5 h-5"
+                ></i>
+              </div>
+              <div class="text-3xl font-bold text-white">24</div>
+            </div>
+            <div
+              class="bg-gray-800 border-l-4 border-yellow-500 p-6 rounded-xl shadow-md"
+            >
+              <div class="flex justify-between items-center text-gray-400 mb-2">
+                <span class="text-sm font-medium uppercase tracking-wider"
+                  >Medium</span
+                ><i
+                  data-lucide="alert-circle"
+                  class="text-yellow-500 w-5 h-5"
+                ></i>
+              </div>
+              <div class="text-3xl font-bold text-white">45</div>
+            </div>
+            <div
+              class="bg-gray-800 border-l-4 border-blue-500 p-6 rounded-xl shadow-md"
+            >
+              <div class="flex justify-between items-center text-gray-400 mb-2">
+                <span class="text-sm font-medium uppercase tracking-wider"
+                  >Low / Info</span
+                ><i data-lucide="info" class="text-blue-500 w-5 h-5"></i>
+              </div>
+              <div class="text-3xl font-bold text-white">118</div>
+            </div>
+          </section>
+
+          <section
+            class="bg-gray-800 rounded-xl border border-gray-700 shadow-md overflow-hidden"
+          >
+            <div
+              class="p-6 border-b border-gray-700 flex justify-between items-center"
+            >
+              <h3 class="text-lg font-semibold text-white">
+                Detected Vulnerabilities
+              </h3>
+              <span
+                class="text-xs bg-gray-700 text-gray-300 px-3 py-1 rounded-full font-medium"
+                >Target: https://api.target-app.com</span
+              >
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr
+                    class="bg-gray-700/50 text-gray-400 uppercase text-xs tracking-wider"
+                  >
+                    <th class="p-4">Severity</th>
+                    <th class="p-4">Vulnerability / CVE</th>
+                    <th class="p-4">Path / URL</th>
+                    <th class="p-4">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-700 text-sm">
+                  <tr class="hover:bg-gray-700/30 transition">
+                    <td class="p-4">
+                      <span
+                        class="px-2.5 py-1 text-xs font-semibold rounded bg-red-500/10 text-red-400 border border-red-500/20"
+                        >CRITICAL</span
+                      >
+                    </td>
+                    <td class="p-4 font-medium text-white">
+                      SQL Injection (CVE-2026-XXXX)
+                    </td>
+                    <td class="p-4 text-gray-400 font-mono text-xs">
+                      /api/v1/users/login.php
+                    </td>
+                    <td class="p-4">
+                      <span class="text-red-400 flex items-center gap-1.5"
+                        ><span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        Open</span
+                      >
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-700/30 transition">
+                    <td class="p-4">
+                      <span
+                        class="px-2.5 py-1 text-xs font-semibold rounded bg-orange-500/10 text-orange-400 border border-orange-500/20"
+                        >HIGH</span
+                      >
+                    </td>
+                    <td class="p-4 font-medium text-white">
+                      Broken Object Level Authorization
+                    </td>
+                    <td class="p-4 text-gray-400 font-mono text-xs">
+                      /api/v1/orders/invoice/[id]
+                    </td>
+                    <td class="p-4">
+                      <span class="text-red-400 flex items-center gap-1.5"
+                        ><span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        Open</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div id="page-scan-target" class="hidden p-8 space-y-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div
+              class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-md h-fit space-y-6"
+            >
+              <h3
+                class="text-lg font-semibold text-white border-b border-gray-700 pb-3 flex items-center gap-2"
+              >
+                <i data-lucide="sliders" class="text-red-500 w-5 h-5"></i>
+                Scanner Control
+              </h3>
+              <form id="scan-form" class="space-y-4">
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase text-gray-400 mb-2"
+                    >Target URL or IP Address</label
+                  >
+                  <input
+                    id="scan-url"
+                    type="text"
+                    required
+                    placeholder="https://example.com"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500 transition"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  id="start-scan-btn"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg flex items-center justify-center gap-2"
+                >
+                  <i data-lucide="play" class="w-4 h-4"></i> Execute
+                  Vulnerability Scan
+                </button>
+              </form>
+            </div>
+
+            <div
+              class="lg:grid lg:col-span-2 bg-black border border-gray-800 rounded-xl p-6 shadow-2xl flex flex-col h-[450px]"
+            >
+              <div
+                class="flex justify-between items-center border-b border-gray-900 pb-3 mb-4"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                  <span class="text-xs font-mono text-gray-500 ml-2"
+                    >vapt_engine_console.sh</span
+                  >
+                </div>
+                <span
+                  id="scan-badge"
+                  class="hidden px-2.5 py-0.5 text-[10px] font-bold rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 tracking-wider uppercase animate-pulse"
+                  >Scanning</span
+                >
+              </div>
+              <div
+                id="terminal-console"
+                class="flex-1 overflow-y-auto font-mono text-xs text-green-400 space-y-2 p-2 scrollbar-thin bg-gray-950/40 rounded-lg border border-gray-900"
+              >
+                <span class="text-gray-500 select-none"
+                  >[vapt-pro-system ~]$</span
+                >
+                Waiting for scanner initialization inputs...
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      // UI Frame Containers
+      const loginView = document.getElementById("login-view");
+      const dashboardView = document.getElementById("dashboard-view");
+      const pageDashboard = document.getElementById("page-dashboard");
+      const pageScanTarget = document.getElementById("page-scan-target");
+
+      // Sidebar Navigation Action Links
+      const navDashboard = document.getElementById("nav-dashboard");
+      const navScan = document.getElementById("nav-scan");
+      const panelTitle = document.getElementById("panel-title");
+
+      // Core Elements Triggers
+      const loginForm = document.getElementById("login-form");
+      const errorMessage = document.getElementById("error-message");
+      const errorText = document.getElementById("error-text");
+      const logoutBtn = document.getElementById("logout-btn");
+      const scanForm = document.getElementById("scan-form");
+      const terminalConsole = document.getElementById("terminal-console");
+      const scanBadge = document.getElementById("scan-badge");
+      const startScanBtn = document.getElementById("start-scan-btn");
+
+      // SPA Navigation Engine
+      navDashboard.addEventListener("click", () => {
+        navDashboard.classList.add("bg-gray-700", "text-white");
+        navDashboard.classList.remove("text-gray-400");
+        navScan.classList.remove("bg-gray-700", "text-white");
+        navScan.classList.add("text-gray-400");
+
+        panelTitle.innerText = "Vulnerability Assessment";
+        pageScanTarget.classList.add("hidden");
+        pageDashboard.classList.remove("hidden");
+      });
+
+      navScan.addEventListener("click", () => {
+        navScan.classList.add("bg-gray-700", "text-white");
+        navScan.classList.remove("text-gray-400");
+        navDashboard.classList.remove("bg-gray-700", "text-white");
+        navDashboard.classList.add("text-gray-400");
+
+        panelTitle.innerText = "Target Vulnerability Scanner Engine";
+        pageDashboard.classList.add("hidden");
+        pageScanTarget.classList.remove("hidden");
+      });
+
+      // API Server Authenticate Request Fetch
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const response = await fetch("http://localhost:3000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            errorMessage.classList.add("hidden");
+            loginView.classList.add("hidden");
+            dashboardView.classList.remove("hidden");
+            dashboardView.classList.add("flex");
+            lucide.createIcons();
+          } else {
+            errorText.innerText = data.message || "Invalid credentials!";
+            errorMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          errorText.innerText =
+            "Internal Connection Error: Server unreachable!";
+          errorMessage.classList.remove("hidden");
+        }
+      });
+
+      // Streaming Terminal Scanner Automation
+      scanForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const targetUrl = document.getElementById("scan-url").value;
+
+        terminalConsole.innerHTML = `<span class="text-blue-400">[SYSTEM-INIT] Initializing vulnerability scan arrays for: ${targetUrl}...</span><br>`;
+        scanBadge.classList.remove("hidden");
+        startScanBtn.disabled = true;
+        startScanBtn.classList.add("opacity-50", "cursor-not-allowed");
+
+        try {
+          const response = await fetch("http://localhost:3000/api/scan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: targetUrl }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.logs) {
+            let logIndex = 0;
+            const consoleInterval = setInterval(() => {
+              if (logIndex < data.logs.length) {
+                terminalConsole.innerHTML += `<div><span class="text-gray-600 font-bold">>>></span> ${data.logs[logIndex]}</div>`;
+                terminalConsole.scrollTop = terminalConsole.scrollHeight;
+                logIndex++;
+              } else {
+                clearInterval(consoleInterval);
+                scanBadge.classList.add("hidden");
+                startScanBtn.disabled = false;
+                startScanBtn.classList.remove(
+                  "opacity-50",
+                  "cursor-not-allowed",
+                );
+              }
+            }, 400);
+          }
+        } catch (error) {
+          terminalConsole.innerHTML += `<div class="text-red-500 font-bold">[CRITICAL_ERROR] Communication array dropped with core script execution engine!</div>`;
+          scanBadge.classList.add("hidden");
+          startScanBtn.disabled = false;
+          startScanBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        }
+      });
+
+      // Session Wipe out trigger handler
+      logoutBtn.addEventListener("click", () => {
+        dashboardView.classList.remove("flex");
+        dashboardView.classList.add("hidden");
+        loginView.classList.remove("hidden");
+        loginForm.reset();
+        scanForm.reset();
+        terminalConsole.innerHTML = `<span class="text-gray-500 select-none">[vapt-pro-system ~]$</span> Waiting for scanner initialization inputs...`;
+      });
+    </script>
+  </body>
+</html>
